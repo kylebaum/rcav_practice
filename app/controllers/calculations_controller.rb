@@ -18,13 +18,20 @@ class CalculationsController < ApplicationController
   def random
     @min = params["min"].to_i
     @max = params["max"].to_i
-
+    @random = rand(@min...@max)
 
   end
   def payment
-    @interest_rate = params["rate"]
-    @number_of_years = params["years"].to_i
-    @principal_value = params["principal"].to_i
+    @apr = params["rate"].to_f
+    @years = params["years"].to_i
+    @principal = params["principal"].to_f
+
+    @apr_calc = (@apr/120000).to_f
+
+    @term_months = (@years*12)
+
+    @monthly_payment = ((@apr_calc*@principal)*((1+@apr_calc)**@term_months))/(((1+@apr_calc)**@term_months)-1)
+    
 
   end
 end
